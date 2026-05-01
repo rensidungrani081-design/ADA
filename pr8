@@ -1,0 +1,37 @@
+import java.util.*;
+
+class Edge implements Comparable<Edge> {
+    int u, v, w;
+    public int compareTo(Edge e) { return this.w - e.w; }
+}
+
+public class Kruskal {
+    static int find(int[] parent, int i) {
+        if (parent[i] == i) return i;
+        return parent[i] = find(parent, parent[i]);
+    }
+
+    static void union(int[] parent, int x, int y) {
+        parent[find(parent, x)] = find(parent, y);
+    }
+
+    public static void main(String[] args) {
+        Edge[] edges = {
+            new Edge(){ {u=0;v=1;w=10;} },
+            new Edge(){ {u=0;v=2;w=6;} },
+            new Edge(){ {u=0;v=3;w=5;} },
+            new Edge(){ {u=1;v=3;w=15;} },
+            new Edge(){ {u=2;v=3;w=4;} }
+        };
+
+        Arrays.sort(edges);
+        int[] parent = {0,1,2,3};
+
+        for (Edge e : edges) {
+            if (find(parent, e.u) != find(parent, e.v)) {
+                System.out.println(e.u + "-" + e.v);
+                union(parent, e.u, e.v);
+            }
+        }
+    }
+}
